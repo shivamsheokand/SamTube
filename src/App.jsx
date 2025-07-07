@@ -778,6 +778,7 @@ function App() {
                         </div>
                         <h3>No Videos Added Yet</h3>
                         <p>Enter a YouTube URL above and click "Add Videos" to get started</p>
+                        <p>Develop by : चौधरी शिवम श्योकंद ✨.</p>
                     </div>
                 )}
             </div>

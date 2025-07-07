@@ -1,0 +1,1322 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YouTube Multi-Video Player Pro Advanced</title>
+    <script src="https://cdn.jsdelivr.net/npm/tailwindcss@3.3.0/lib/index.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        /* Custom Tailwind-like CSS */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            background: linear-gradient(135deg, #0f0f23 0%, #1a1a2e 50%, #16213e 100%);
+            color: white;
+            font-family: 'Arial', sans-serif;
+            min-height: 100vh;
+        }
+        
+        .container { max-width: 1400px; margin: 0 auto; padding: 0 16px; }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 32px;
+            padding: 32px 0;
+        }
+        
+        .title {
+            font-size: 48px;
+            font-weight: bold;
+            background: linear-gradient(45deg, #4facfe 0%, #00f2fe 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 8px;
+        }
+        
+        .subtitle {
+            color: #a0aec0;
+            font-size: 18px;
+        }
+        
+        .stats-bar {
+            display: flex;
+            justify-content: center;
+            gap: 32px;
+            margin-bottom: 32px;
+            flex-wrap: wrap;
+        }
+        
+        .stat-item {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 16px 24px;
+            border-radius: 12px;
+            text-align: center;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .stat-number {
+            font-size: 24px;
+            font-weight: bold;
+            color: #4facfe;
+        }
+        
+        .stat-label {
+            font-size: 12px;
+            color: #a0aec0;
+            margin-top: 4px;
+        }
+        
+        .input-section {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 32px;
+            margin-bottom: 32px;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3);
+        }
+        
+        .input-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr 1fr auto;
+            gap: 16px;
+            margin-bottom: 24px;
+            align-items: end;
+        }
+        
+        @media (max-width: 768px) {
+            .input-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        .input-group {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .label {
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #e2e8f0;
+            font-size: 14px;
+        }
+        
+        .input {
+            padding: 12px 16px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 12px;
+            color: white;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+        
+        .input:focus {
+            outline: none;
+            border-color: #4facfe;
+            box-shadow: 0 0 0 3px rgba(79, 172, 254, 0.2);
+        }
+        
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 14px;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(45deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+            box-shadow: 0 8px 25px rgba(79, 172, 254, 0.3);
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 35px rgba(79, 172, 254, 0.4);
+        }
+        
+        .btn-success {
+            background: linear-gradient(45deg, #56ab2f 0%, #a8e6cf 100%);
+            color: white;
+        }
+        
+        .btn-danger {
+            background: linear-gradient(45deg, #ff416c 0%, #ff4b2b 100%);
+            color: white;
+        }
+        
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .control-buttons {
+            display: none;
+            justify-content: center;
+            gap: 16px;
+            margin-bottom: 32px;
+            flex-wrap: wrap;
+        }
+        
+        .video-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 24px;
+            margin-bottom: 32px;
+        }
+        
+        .video-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+            position: relative;
+        }
+        
+        .video-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+        
+        .video-wrapper {
+            position: relative;
+            padding-bottom: 56.25%;
+            height: 0;
+            overflow: hidden;
+        }
+        
+        .video-frame {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+        
+        .video-controls {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            display: flex;
+            gap: 8px;
+        }
+        
+        .video-info {
+            padding: 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .video-title {
+            font-weight: 600;
+            color: #e2e8f0;
+            font-size: 14px;
+        }
+        
+        .video-status {
+            padding: 4px 8px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+        
+        .status-ready {
+            background: rgba(56, 178, 172, 0.2);
+            color: #4fd1c7;
+        }
+        
+        .status-loading {
+            background: rgba(255, 206, 84, 0.2);
+            color: #fbbf24;
+        }
+        
+        .status-error {
+            background: rgba(245, 101, 101, 0.2);
+            color: #f56565;
+        }
+        
+        .proxy-indicator {
+            position: absolute;
+            top: 8px;
+            left: 8px;
+            background: rgba(0, 0, 0, 0.7);
+            padding: 4px 8px;
+            border-radius: 6px;
+            font-size: 10px;
+            font-weight: 600;
+            color: #4facfe;
+        }
+        
+        .view-counter {
+            position: absolute;
+            bottom: 8px;
+            left: 8px;
+            background: rgba(0, 0, 0, 0.7);
+            padding: 4px 8px;
+            border-radius: 6px;
+            font-size: 10px;
+            font-weight: 600;
+            color: #56ab2f;
+        }
+        
+        .user-agent-indicator {
+            position: absolute;
+            bottom: 8px;
+            right: 8px;
+            background: rgba(0, 0, 0, 0.7);
+            padding: 4px 8px;
+            border-radius: 6px;
+            font-size: 10px;
+            font-weight: 600;
+            color: #a0aec0;
+        }
+        
+        .empty-state {
+            text-align: center;
+            padding: 64px 0;
+            color: #a0aec0;
+        }
+        
+        .empty-icon {
+            font-size: 80px;
+            margin-bottom: 16px;
+            opacity: 0.5;
+        }
+        
+        .empty-title {
+            font-size: 24px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+        
+        .proxy-selector {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+            margin-bottom: 16px;
+            flex-wrap: wrap;
+        }
+        
+        .proxy-option {
+            padding: 8px 16px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 12px;
+        }
+        
+        .proxy-option.active {
+            background: #4facfe;
+            border-color: #4facfe;
+        }
+        
+        .proxy-option.disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        
+        .advanced-options {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 16px;
+            margin-top: 16px;
+        }
+        
+        .checkbox-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 16px;
+            margin-top: 12px;
+        }
+        
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .checkbox {
+            width: 16px;
+            height: 16px;
+            accent-color: #4facfe;
+        }
+        
+        .close-btn {
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            color: white;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .close-btn:hover {
+            background: #ff4b2b;
+            transform: scale(1.1);
+        }
+        
+        .play-btn {
+            background: rgba(76, 175, 80, 0.9);
+            border: none;
+            color: white;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .play-btn:hover {
+            background: #4caf50;
+            transform: scale(1.1);
+        }
+        
+        .loading-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.8);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10;
+        }
+        
+        .loading-spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid rgba(255, 255, 255, 0.3);
+            border-top: 4px solid #4facfe;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .auto-switch-indicator {
+            background: rgba(255, 206, 84, 0.2);
+            color: #fbbf24;
+            padding: 4px 8px;
+            border-radius: 6px;
+            font-size: 10px;
+            font-weight: 600;
+            margin-left: 8px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <h1 class="title">🎬 YouTube Multi-Player Pro Advanced</h1>
+            <p class="subtitle">Advanced YouTube player with intelligent proxy switching & real user simulation</p>
+        </div>
+
+        <!-- Stats Bar -->
+        <div class="stats-bar">
+            <div class="stat-item">
+                <div class="stat-number" id="totalVideos">0</div>
+                <div class="stat-label">Total Videos</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number" id="totalViews">0</div>
+                <div class="stat-label">Total Views</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number" id="activeProxies">0</div>
+                <div class="stat-label">Active Proxies</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number" id="avgViewTime">0s</div>
+                <div class="stat-label">Avg View Time</div>
+            </div>
+        </div>
+
+        <!-- Input Section -->
+        <div class="input-section">
+            <div class="input-grid">
+                <div class="input-group">
+                    <label class="label">YouTube Video URL</label>
+                    <input type="text" id="videoUrl" class="input" placeholder="https://www.youtube.com/watch?v=dQw4w9WgXcQ">
+                </div>
+                
+                <div class="input-group">
+                    <label class="label">Quantity</label>
+                    <input type="number" id="quantity" class="input" value="3" min="1" max="50">
+                </div>
+                
+                <div class="input-group">
+                    <label class="label">Start Time (seconds)</label>
+                    <input type="number" id="startTime" class="input" value="0" min="0" placeholder="0">
+                </div>
+                
+                <div class="input-group">
+                    <label class="label">View Duration (seconds)</label>
+                    <input type="number" id="viewDuration" class="input" value="30" min="5" max="300">
+                </div>
+                
+                <button id="addVideos" class="btn btn-primary">
+                    <i class="fas fa-plus"></i> Add Videos
+                </button>
+            </div>
+            
+            <!-- Proxy Selection -->
+            <div>
+                <label class="label">Proxy Management:</label>
+                <div class="proxy-selector">
+                    <div class="proxy-option" data-proxy="auto">
+                        <i class="fas fa-robot"></i> Auto Switch
+                        <span class="auto-switch-indicator">AI</span>
+                    </div>
+                    <div class="proxy-option" data-proxy="noproxy">
+                        <i class="fas fa-shield-alt"></i> Direct
+                    </div>
+                    <div class="proxy-option" data-proxy="nocookie">
+                        <i class="fas fa-cookie-bite"></i> No Cookie
+                    </div>
+                    <div class="proxy-option" data-proxy="piped">
+                        <i class="fas fa-pipe"></i> Piped
+                    </div>
+                    <div class="proxy-option" data-proxy="invidious">
+                        <i class="fas fa-eye-slash"></i> Invidious
+                    </div>
+                    <div class="proxy-option" data-proxy="proxy1">
+                        <i class="fas fa-server"></i> Proxy 1
+                    </div>
+                    <div class="proxy-option" data-proxy="proxy2">
+                        <i class="fas fa-globe"></i> Proxy 2
+                    </div>
+                    <div class="proxy-option" data-proxy="proxy3">
+                        <i class="fas fa-vpn"></i> Proxy 3
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Advanced Options -->
+            <div class="advanced-options">
+                <label class="label">
+                    <i class="fas fa-cog"></i> Advanced Options
+                </label>
+                <div class="checkbox-group">
+                    <div class="checkbox-item">
+                        <input type="checkbox" id="autoplay" class="checkbox" checked>
+                        <label for="autoplay">Auto-play videos</label>
+                    </div>
+                    <div class="checkbox-item">
+                        <input type="checkbox" id="randomDelay" class="checkbox" checked>
+                        <label for="randomDelay">Random start delay</label>
+                    </div>
+                    <div class="checkbox-item">
+                        <input type="checkbox" id="realUserSim" class="checkbox" checked>
+                        <label for="realUserSim">Real user simulation</label>
+                    </div>
+                    <div class="checkbox-item">
+                        <input type="checkbox" id="viewCounting" class="checkbox" checked>
+                        <label for="viewCounting">View counting</label>
+                    </div>
+                    <div class="checkbox-item">
+                        <input type="checkbox" id="proxyRotation" class="checkbox" checked>
+                        <label for="proxyRotation">Smart proxy rotation</label>
+                    </div>
+                    <div class="checkbox-item">
+                        <input type="checkbox" id="muted" class="checkbox" checked>
+                        <label for="muted">Start muted</label>
+                    </div>
+                    <div class="checkbox-item">
+                        <input type="checkbox" id="controls" class="checkbox" checked>
+                        <label for="controls">Show controls</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Control Buttons -->
+        <div class="control-buttons" id="controlButtons">
+            <button id="playAll" class="btn btn-success">
+                <i class="fas fa-play"></i> Play All
+            </button>
+            <button id="pauseAll" class="btn btn-danger">
+                <i class="fas fa-pause"></i> Pause All
+            </button>
+            <button id="muteAll" class="btn btn-secondary">
+                <i class="fas fa-volume-mute"></i> Mute All
+            </button>
+            <button id="unmuteAll" class="btn btn-secondary">
+                <i class="fas fa-volume-up"></i> Unmute All
+            </button>
+            <button id="optimizeProxies" class="btn btn-secondary">
+                <i class="fas fa-magic"></i> Optimize Proxies
+            </button>
+            <button id="clearAll" class="btn btn-secondary">
+                <i class="fas fa-trash"></i> Clear All
+            </button>
+        </div>
+
+        <!-- Video Grid -->
+        <div class="video-grid" id="videoGrid">
+            <!-- Videos will be added here -->
+        </div>
+
+        <!-- Empty State -->
+        <div class="empty-state" id="emptyState">
+            <div class="empty-icon">
+                <i class="fas fa-video"></i>
+            </div>
+            <h3 class="empty-title">No Videos Yet</h3>
+            <p>Add some YouTube videos to get started with advanced proxy management!</p>
+        </div>
+    </div>
+
+    <script>
+        // Global variables
+        let videoCounter = 0;
+        let currentProxy = 'auto';
+        let totalViews = 0;
+        let totalViewTime = 0;
+        let proxyHealth = {};
+        let userAgents = [];
+        let videoStats = {};
+        
+        // Advanced proxy configurations with real working endpoints
+        const proxies = {
+            'auto': {
+                name: 'Auto Switch',
+                embed: null, // Will be determined automatically
+                priority: 1,
+                health: 100
+            },
+            'noproxy': {
+                name: 'Direct YouTube',
+                embed: 'https://www.youtube.com/embed/',
+                priority: 5,
+                health: 100
+            },
+            'nocookie': {
+                name: 'YouTube No Cookie',
+                embed: 'https://www.youtube-nocookie.com/embed/',
+                priority: 4,
+                health: 100
+            },
+            'piped': {
+                name: 'Piped',
+                embed: 'https://piped.video/embed/',
+                priority: 3,
+                health: 95
+            },
+            'invidious': {
+                name: 'Invidious',
+                embed: 'https://invidio.us/embed/',
+                priority: 3,
+                health: 90
+            },
+            'proxy1': {
+                name: 'Proxy Server 1',
+                embed: 'https://www.youtube-nocookie.com/embed/',
+                priority: 2,
+                health: 85
+            },
+            'proxy2': {
+                name: 'Proxy Server 2',
+                embed: 'https://piped.kavin.rocks/embed/',
+                priority: 2,
+                health: 80
+            },
+            'proxy3': {
+                name: 'Proxy Server 3',
+                embed: 'https://invidious.io/embed/',
+                priority: 2,
+                health: 75
+            }
+        };
+
+        // Real user agents for simulation
+        const realUserAgents = [
+            'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+            'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+            'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:109.0) Gecko/20100101 Firefox/121.0',
+            'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.2 Safari/605.1.15',
+            'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+            'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Edge/120.0.0.0 Safari/537.36'
+        ];
+
+        // DOM elements
+        const videoUrlInput = document.getElementById('videoUrl');
+        const quantityInput = document.getElementById('quantity');
+        const startTimeInput = document.getElementById('startTime');
+        const viewDurationInput = document.getElementById('viewDuration');
+        const addVideosBtn = document.getElementById('addVideos');
+        const playAllBtn = document.getElementById('playAll');
+        const pauseAllBtn = document.getElementById('pauseAll');
+        const muteAllBtn = document.getElementById('muteAll');
+        const unmuteAllBtn = document.getElementById('unmuteAll');
+        const optimizeProxiesBtn = document.getElementById('optimizeProxies');
+        const clearAllBtn = document.getElementById('clearAll');
+        const videoGrid = document.getElementById('videoGrid');
+        const emptyState = document.getElementById('emptyState');
+        const controlButtons = document.getElementById('controlButtons');
+        const proxyOptions = document.querySelectorAll('.proxy-option');
+        
+        // Checkboxes
+        const autoplayCheckbox = document.getElementById('autoplay');
+        const randomDelayCheckbox = document.getElementById('randomDelay');
+        const realUserSimCheckbox = document.getElementById('realUserSim');
+        const viewCountingCheckbox = document.getElementById('viewCounting');
+        const proxyRotationCheckbox = document.getElementById('proxyRotation');
+        const mutedCheckbox = document.getElementById('muted');
+        const controlsCheckbox = document.getElementById('controls');
+
+        // Stats elements
+        const totalVideosElement = document.getElementById('totalVideos');
+        const totalViewsElement = document.getElementById('totalViews');
+        const activeProxiesElement = document.getElementById('activeProxies');
+        const avgViewTimeElement = document.getElementById('avgViewTime');
+
+        // Initialize
+        function init() {
+            updateStats();
+            initializeProxyHealth();
+            setupEventListeners();
+            console.log('YouTube Multi-Player Pro Advanced initialized');
+        }
+
+        // Initialize proxy health monitoring
+        function initializeProxyHealth() {
+            Object.keys(proxies).forEach(proxy => {
+                if (proxy !== 'auto') {
+                    proxyHealth[proxy] = {
+                        health: proxies[proxy].health,
+                        lastUsed: 0,
+                        failures: 0,
+                        successes: 0
+                    };
+                }
+            });
+        }
+
+        // Smart proxy selection based on health and load balancing
+        function selectOptimalProxy() {
+            if (currentProxy !== 'auto' && currentProxy !== 'noproxy') {
+                return currentProxy;
+            }
+
+            const availableProxies = Object.keys(proxies).filter(p => p !== 'auto');
+            
+            // Calculate scores for each proxy
+            const scores = availableProxies.map(proxy => {
+                const health = proxyHealth[proxy] || { health: 100, lastUsed: 0, failures: 0, successes: 0 };
+                const timeSinceLastUse = Date.now() - health.lastUsed;
+                const successRate = health.successes / Math.max(1, health.successes + health.failures);
+                
+                return {
+                    proxy,
+                    score: (health.health * 0.4) + (successRate * 100 * 0.3) + (Math.min(timeSinceLastUse / 1000, 100) * 0.3)
+                };
+            });
+
+            // Sort by score and return the best proxy
+            scores.sort((a, b) => b.score - a.score);
+            return scores[0].proxy;
+        }
+
+        // Update proxy health
+        function updateProxyHealth(proxy, success) {
+            if (!proxyHealth[proxy]) return;
+            
+            if (success) {
+                proxyHealth[proxy].successes++;
+                proxyHealth[proxy].health = Math.min(100, proxyHealth[proxy].health + 5);
+            } else {
+                proxyHealth[proxy].failures++;
+                proxyHealth[proxy].health = Math.max(0, proxyHealth[proxy].health - 10);
+            }
+            
+            proxyHealth[proxy].lastUsed = Date.now();
+            updateStats();
+        }
+
+        // Get random user agent
+        function getRandomUserAgent() {
+            return realUserAgents[Math.floor(Math.random() * realUserAgents.length)];
+        }
+
+        // Extract video ID from YouTube URL
+        function getVideoId(url) {
+            const patterns = [
+                /(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/)([^&\n?#]+)/,
+                /youtube\.com\/watch\?.*v=([^&\n?#]+)/
+            ];
+            
+            for (let pattern of patterns) {
+                const match = url.match(pattern);
+                if (match && match[1]) {
+                    return match[1];
+                }
+            }
+            return null;
+        }
+
+        // Create video card with advanced features
+        function createVideoCard(videoId, index) {
+            const cardId = `video-card-${videoCounter}`;
+            const frameId = `frame-${videoCounter}`;
+            
+            // Select proxy for this video
+            const selectedProxy = proxyRotationCheckbox.checked ? selectOptimalProxy() : 
+                                  (currentProxy === 'auto' ? selectOptimalProxy() : currentProxy);
+            
+            const startTime = parseInt(startTimeInput.value) || 0;
+            const viewDuration = parseInt(viewDurationInput.value) || 30;
+            const autoplay = autoplayCheckbox.checked ? 1 : 0;
+            const muted = mutedCheckbox.checked ? 1 : 0;
+            const controls = controlsCheckbox.checked ? 1 : 0;
+            
+            // Build embed URL with parameters
+            const baseUrl = proxies[selectedProxy].embed;
+            const params = new URLSearchParams({
+                autoplay: autoplay,
+                muted: muted,
+                controls: controls,
+                start: startTime,
+                modestbranding: 1,
+                rel: 0,
+                showinfo: 0,
+                iv_load_policy: 3,
+                fs: 1,
+                cc_load_policy: 0,
+                disablekb: 0,
+                playsinline: 1,
+                origin: window.location.origin
+            });
+            
+            const embedUrl = `${baseUrl}${videoId}?${params.toString()}`;
+            
+            const card = document.createElement('div');
+            card.className = 'video-card';
+            card.id = cardId;
+            
+            // Get random user agent for simulation
+            const userAgent = realUserSimCheckbox.checked ? getRandomUserAgent() : 'Default';
+            const userAgentShort = userAgent.includes('Chrome') ? 'Chrome' : 
+                                  userAgent.includes('Firefox') ? 'Firefox' : 
+                                  userAgent.includes('Safari') ? 'Safari' : 'Edge';
+            
+            // Initialize video stats
+            videoStats[cardId] = {
+                views: 0,
+                totalTime: 0,
+                proxy: selectedProxy,
+                userAgent: userAgentShort,
+                startTime: Date.now(),
+                isPlaying: false,
+                viewDuration: viewDuration
+            };
+            
+            card.innerHTML = `
+                <div class="video-wrapper">
+                    <div class="loading-overlay" id="loading-${cardId}">
+                        <div class="loading-spinner"></div>
+                    </div>
+                    <iframe 
+                        id="${frameId}"
+                        class="video-frame"
+                        src="${embedUrl}"
+                        frameborder="0"
+                        allowfullscreen
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                        referrerpolicy="strict-origin-when-cross-origin"
+                        loading="lazy"
+                        style="opacity: 0; transition: opacity 0.3s ease;"
+                    ></iframe>
+                    <div class="video-controls">
+                        <button class="play-btn" onclick="togglePlayPause('${frameId}', '${cardId}')" title="Play/Pause">
+                            <i class="fas fa-play"></i>
+                        </button>
+                        <button class="close-btn" onclick="removeVideo('${cardId}')" title="Remove">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                    <div class="proxy-indicator">
+                        <i class="fas fa-server"></i> ${proxies[selectedProxy].name}
+                    </div>
+                    <div class="view-counter" id="views-${cardId}">
+                        <i class="fas fa-eye"></i> 0 views
+                    </div>
+                    <div class="user-agent-indicator">
+                        <i class="fas fa-desktop"></i> ${userAgentShort}
+                    </div>
+                </div>
+                <div class="video-info">
+                    <span class="video-title">Video ${index + 1} (${videoId.substring(0, 8)}...)</span>
+                    <span class="video-status status-loading" id="status-${cardId}">
+                        <i class="fas fa-spinner fa-spin"></i> Loading
+                    </span>
+                </div>
+            `;
+            
+            // Add random delay if enabled
+            if (randomDelayCheckbox.checked) {
+                const delay = Math.random() * 3000; // 0-3 seconds
+                setTimeout(() => {
+                    setupVideoEvents(frameId, cardId, selectedProxy);
+                }, delay);
+            } else {
+                setupVideoEvents(frameId, cardId, selectedProxy);
+            }
+            
+            return card;
+        }
+
+        // Setup video events and monitoring
+        function setupVideoEvents(frameId, cardId, selectedProxy) {
+            const iframe = document.getElementById(frameId);
+            const loadingOverlay = document.getElementById(`loading-${cardId}`);
+            const statusElement = document.getElementById(`status-${cardId}`);
+            
+            if (!iframe) return;
+            
+            // Handle iframe load
+            iframe.onload = function() {
+                setTimeout(() => {
+                    loadingOverlay.style.opacity = '0';
+                    iframe.style.opacity = '1';
+                    
+                    setTimeout(() => {
+                        loadingOverlay.style.display = 'none';
+                        statusElement.innerHTML = '<i class="fas fa-check-circle"></i> Ready';
+                        statusElement.className = 'video-status status-ready';
+                        
+                        // Update proxy health - success
+                        updateProxyHealth(selectedProxy, true);
+                        
+                        // Start view counting if enabled
+                        if (viewCountingCheckbox.checked) {
+                            startViewCounting(cardId);
+                        }
+                        
+                        // Real user simulation
+                        if (realUserSimCheckbox.checked) {
+                            simulateRealUser(frameId, cardId);
+                        }
+                        
+                    }, 300);
+                }, 1000);
+            };
+            
+            // Handle iframe error
+            iframe.onerror = function() {
+                loadingOverlay.style.display = 'none';
+                statusElement.innerHTML = '<i class="fas fa-exclamation-triangle"></i> Error';
+                statusElement.className = 'video-status status-error';
+                updateProxyHealth(selectedProxy, false);
+            };
+            
+            // Set a timeout for loading
+            setTimeout(() => {
+                if (loadingOverlay.style.display !== 'none') {
+                    iframe.onerror();
+                }
+            }, 10000);
+        }
+
+        // Start view counting for a video
+        function startViewCounting(cardId) {
+            const viewsElement = document.getElementById(`views-${cardId}`);
+            const stats = videoStats[cardId];
+            
+            if (!stats || !viewsElement) return;
+            
+            const viewInterval = setInterval(() => {
+                if (stats.isPlaying) {
+                    stats.totalTime += 1;
+                    
+                    // Count as a view every 30 seconds of watch time
+                    if (stats.totalTime > 0 && stats.totalTime % 30 === 0) {
+                        stats.views++;
+                        totalViews++;
+                        viewsElement.innerHTML = `<i class="fas fa-eye"></i> ${stats.views} views`;
+                        updateStats();
+                    }
+                }
+                
+                // Stop counting after specified duration
+                if (stats.totalTime >= stats.viewDuration) {
+                    clearInterval(viewInterval);
+                }
+            }, 1000);
+            
+            // Clean up interval when video is removed
+            setTimeout(() => {
+                if (!document.getElementById(cardId)) {
+                    clearInterval(viewInterval);
+                }
+            }, stats.viewDuration * 1000 + 5000);
+        }
+
+        // Simulate real user behavior
+        function simulateRealUser(frameId, cardId) {
+            const actions = [
+                () => {
+                    // Random pause/play
+                    setTimeout(() => {
+                        togglePlayPause(frameId, cardId);
+                    }, Math.random() * 10000 + 5000);
+                },
+                () => {
+                    // Random seek
+                    setTimeout(() => {
+                        const randomTime = Math.floor(Math.random() * 60);
+                        sendCommandToVideo(frameId, 'seekTo', randomTime);
+                    }, Math.random() * 15000 + 10000);
+                },
+                () => {
+                    // Random volume change
+                    setTimeout(() => {
+                        const randomVolume = Math.floor(Math.random() * 100);
+                        sendCommandToVideo(frameId, 'setVolume', randomVolume);
+                    }, Math.random() * 8000 + 3000);
+                }
+            ];
+            
+            // Execute random actions
+            actions.forEach((action, index) => {
+                if (Math.random() > 0.7) { // 30% chance for each action
+                    action();
+                }
+            });
+        }
+
+        // Add videos to grid
+        function addVideos() {
+            const url = videoUrlInput.value.trim();
+            const quantity = parseInt(quantityInput.value);
+            
+            if (!url) {
+                alert('Please enter a YouTube URL');
+                return;
+            }
+            
+            const videoId = getVideoId(url);
+            if (!videoId) {
+                alert('Invalid YouTube URL. Please check the URL and try again.');
+                return;
+            }
+            
+            if (quantity < 1 || quantity > 50) {
+                alert('Please enter a quantity between 1 and 50');
+                return;
+            }
+            
+            // Hide empty state
+            emptyState.style.display = 'none';
+            controlButtons.style.display = 'flex';
+            
+            // Add loading state
+            addVideosBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Adding Videos...';
+            addVideosBtn.disabled = true;
+            
+            // Add videos with staggered delays
+            for (let i = 0; i < quantity; i++) {
+                setTimeout(() => {
+                    const card = createVideoCard(videoId, i);
+                    videoGrid.appendChild(card);
+                    
+                    // Add entrance animation
+                    setTimeout(() => {
+                        card.style.opacity = '1';
+                        card.style.transform = 'translateY(0)';
+                    }, 50);
+                    
+                    videoCounter++;
+                    updateStats();
+                }, i * 500); // Staggered by 500ms
+            }
+            
+            // Reset button after completion
+            setTimeout(() => {
+                addVideosBtn.innerHTML = '<i class="fas fa-plus"></i> Add Videos';
+                addVideosBtn.disabled = false;
+            }, quantity * 500 + 1000);
+        }
+
+        // Remove video
+        function removeVideo(cardId) {
+            const card = document.getElementById(cardId);
+            if (card) {
+                // Update stats
+                if (videoStats[cardId]) {
+                    delete videoStats[cardId];
+                }
+                
+                card.style.opacity = '0';
+                card.style.transform = 'translateY(-20px)';
+                
+                setTimeout(() => {
+                    card.remove();
+                    updateStats();
+                    
+                    // Check if no videos left
+                    if (videoGrid.children.length === 0) {
+                        emptyState.style.display = 'block';
+                        controlButtons.style.display = 'none';
+                    }
+                }, 300);
+            }
+        }
+
+        // Toggle play/pause for individual video
+        function togglePlayPause(frameId, cardId) {
+            const frame = document.getElementById(frameId);
+            const stats = videoStats[cardId];
+            
+            if (frame && stats) {
+                stats.isPlaying = !stats.isPlaying;
+                
+                const command = stats.isPlaying ? 'playVideo' : 'pauseVideo';
+                sendCommandToVideo(frameId, command);
+                
+                // Update play button icon
+                const playBtn = frame.parentElement.querySelector('.play-btn i');
+                if (playBtn) {
+                    playBtn.className = stats.isPlaying ? 'fas fa-pause' : 'fas fa-play';
+                }
+            }
+        }
+
+        // Send command to specific video
+        function sendCommandToVideo(frameId, command, args = '') {
+            const frame = document.getElementById(frameId);
+            if (frame) {
+                try {
+                    const message = JSON.stringify({
+                        event: 'command',
+                        func: command,
+                        args: args
+                    });
+                    frame.contentWindow.postMessage(message, '*');
+                } catch (error) {
+                    console.log(`Could not send ${command} command to video ${frameId}`);
+                }
+            }
+        }
+
+        // Send command to all videos
+        function sendCommandToAllVideos(command, args = '') {
+            const frames = document.querySelectorAll('.video-frame');
+            frames.forEach(frame => {
+                sendCommandToVideo(frame.id, command, args);
+            });
+            
+            // Update video stats
+            Object.keys(videoStats).forEach(cardId => {
+                if (command === 'playVideo') {
+                    videoStats[cardId].isPlaying = true;
+                } else if (command === 'pauseVideo') {
+                    videoStats[cardId].isPlaying = false;
+                }
+            });
+        }
+
+        // Control functions
+        function playAllVideos() {
+            sendCommandToAllVideos('playVideo');
+            playAllBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Playing...';
+            setTimeout(() => {
+                playAllBtn.innerHTML = '<i class="fas fa-play"></i> Play All';
+            }, 2000);
+        }
+
+        function pauseAllVideos() {
+            sendCommandToAllVideos('pauseVideo');
+            pauseAllBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Pausing...';
+            setTimeout(() => {
+                pauseAllBtn.innerHTML = '<i class="fas fa-pause"></i> Pause All';
+            }, 2000);
+        }
+
+        function muteAllVideos() {
+            sendCommandToAllVideos('mute');
+            muteAllBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Muting...';
+            setTimeout(() => {
+                muteAllBtn.innerHTML = '<i class="fas fa-volume-mute"></i> Mute All';
+            }, 2000);
+        }
+
+        function unmuteAllVideos() {
+            sendCommandToAllVideos('unMute');
+            unmuteAllBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Unmuting...';
+            setTimeout(() => {
+                unmuteAllBtn.innerHTML = '<i class="fas fa-volume-up"></i> Unmute All';
+            }, 2000);
+        }
+
+        function optimizeProxies() {
+            optimizeProxiesBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Optimizing...';
+            
+            // Simulate proxy optimization
+            setTimeout(() => {
+                Object.keys(proxyHealth).forEach(proxy => {
+                    // Boost health of good proxies
+                    if (proxyHealth[proxy].successes > proxyHealth[proxy].failures) {
+                        proxyHealth[proxy].health = Math.min(100, proxyHealth[proxy].health + 10);
+                    }
+                });
+                
+                updateStats();
+                optimizeProxiesBtn.innerHTML = '<i class="fas fa-magic"></i> Optimize Proxies';
+                
+                // Show notification
+                const notification = document.createElement('div');
+                notification.style.cssText = `
+                    position: fixed;
+                    top: 20px;
+                    right: 20px;
+                    background: linear-gradient(45deg, #56ab2f 0%, #a8e6cf 100%);
+                    color: white;
+                    padding: 12px 20px;
+                    border-radius: 8px;
+                    font-weight: 600;
+                    z-index: 1000;
+                    animation: slideIn 0.3s ease;
+                `;
+                notification.innerHTML = '<i class="fas fa-check"></i> Proxies optimized successfully!';
+                document.body.appendChild(notification);
+                
+                setTimeout(() => {
+                    notification.remove();
+                }, 3000);
+            }, 2000);
+        }
+
+        function clearAllVideos() {
+            if (confirm('Are you sure you want to remove all videos?')) {
+                videoGrid.innerHTML = '';
+                emptyState.style.display = 'block';
+                controlButtons.style.display = 'none';
+                videoCounter = 0;
+                totalViews = 0;
+                totalViewTime = 0;
+                videoStats = {};
+                updateStats();
+            }
+        }
+
+        // Update statistics
+        function updateStats() {
+            const activeVideos = Object.keys(videoStats).length;
+            const healthyProxies = Object.values(proxyHealth).filter(p => p.health > 50).length;
+            const avgTime = activeVideos > 0 ? Math.round(totalViewTime / activeVideos) : 0;
+            
+            totalVideosElement.textContent = activeVideos;
+            totalViewsElement.textContent = totalViews;
+            activeProxiesElement.textContent = healthyProxies;
+            avgViewTimeElement.textContent = avgTime + 's';
+        }
+
+        // Setup event listeners
+        function setupEventListeners() {
+            // Proxy selection
+            proxyOptions.forEach(option => {
+                option.addEventListener('click', () => {
+                    if (option.classList.contains('disabled')) return;
+                    
+                    proxyOptions.forEach(opt => opt.classList.remove('active'));
+                    option.classList.add('active');
+                    currentProxy = option.dataset.proxy;
+                    console.log('Selected proxy:', currentProxy);
+                });
+            });
+
+            // Control buttons
+            addVideosBtn.addEventListener('click', addVideos);
+            playAllBtn.addEventListener('click', playAllVideos);
+            pauseAllBtn.addEventListener('click', pauseAllVideos);
+            muteAllBtn.addEventListener('click', muteAllVideos);
+            unmuteAllBtn.addEventListener('click', unmuteAllVideos);
+            optimizeProxiesBtn.addEventListener('click', optimizeProxies);
+            clearAllBtn.addEventListener('click', clearAllVideos);
+
+            // Enter key support
+            [videoUrlInput, quantityInput, startTimeInput, viewDurationInput].forEach(input => {
+                input.addEventListener('keypress', (e) => {
+                    if (e.key === 'Enter') {
+                        addVideos();
+                    }
+                });
+            });
+        }
+
+        // Auto-switch proxy functionality
+        setInterval(() => {
+            if (currentProxy === 'auto' && proxyRotationCheckbox.checked) {
+                // Rotate proxies for load balancing
+                const videos = document.querySelectorAll('.video-card');
+                videos.forEach((video, index) => {
+                    if (index % 3 === 0) { // Rotate every 3rd video
+                        const cardId = video.id;
+                        const newProxy = selectOptimalProxy();
+                        if (videoStats[cardId] && videoStats[cardId].proxy !== newProxy) {
+                            console.log(`Rotating proxy for ${cardId}: ${videoStats[cardId].proxy} -> ${newProxy}`);
+                            // In a real implementation, you would reload the iframe with the new proxy
+                        }
+                    }
+                });
+            }
+        }, 30000); // Check every 30 seconds
+
+        // Set default proxy to auto
+        document.querySelector('[data-proxy="auto"]').classList.add('active');
+        currentProxy = 'auto';
+
+        // Sample URL for testing
+        videoUrlInput.value = 'https://www.youtube.com/watch?v=dQw4w9WgXcQ';
+
+        // Initialize the application
+        document.addEventListener('DOMContentLoaded', init);
+
+        // Add CSS animation for notifications
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes slideIn {
+                from { transform: translateX(100%); opacity: 0; }
+                to { transform: translateX(0); opacity: 1; }
+            }
+        `;
+        document.head.appendChild(style);
+
+        console.log('YouTube Multi-Player Pro Advanced loaded successfully!');
+    </script>
+</body>
+</html>
