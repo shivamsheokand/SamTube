@@ -1,0 +1,81 @@
+{
+  "proxies": {
+    "auto": {
+      "name": "AI Auto Switch",
+      "embed": null,
+      "priority": 1,
+      "health": 100,
+      "icon": "fas fa-robot",
+      "description": "Intelligent proxy switching based on performance"
+    },
+    "noproxy": {
+      "name": "Direct YouTube",
+      "embed": "https://www.youtube.com/embed/",
+      "priority": 5,
+      "health": 100,
+      "icon": "fas fa-shield-alt",
+      "description": "Direct access to YouTube (may be blocked)"
+    },
+    "nocookie": {
+      "name": "YouTube Privacy",
+      "embed": "https://www.youtube-nocookie.com/embed/",
+      "priority": 4,
+      "health": 95,
+      "icon": "fas fa-cookie-bite",
+      "description": "Privacy-enhanced YouTube embedding"
+    },
+    "piped": {
+      "name": "Piped Mirror",
+      "embed": "https://piped.video/embed/",
+      "priority": 3,
+      "health": 90,
+      "icon": "fas fa-pipe",
+      "description": "Open-source YouTube frontend"
+    },
+    "invidious": {
+      "name": "Invidious Mirror",
+      "embed": "https://invidio.us/embed/",
+      "priority": 3,
+      "health": 85,
+      "icon": "fas fa-eye-slash",
+      "description": "Privacy-focused YouTube alternative"
+    },
+    "proxy1": {
+      "name": "High Speed Proxy",
+      "embed": "https://www.youtube-nocookie.com/embed/",
+      "priority": 2,
+      "health": 80,
+      "icon": "fas fa-rocket",
+      "description": "Optimized for speed"
+    },
+    "proxy2": {
+      "name": "Global Proxy",
+      "embed": "https://piped.kavin.rocks/embed/",
+      "priority": 2,
+      "health": 75,
+      "icon": "fas fa-globe",
+      "description": "Global CDN proxy"
+    },
+    "proxy3": {
+      "name": "Backup Proxy",
+      "embed": "https://invidious.io/embed/",
+      "priority": 2,
+      "health": 70,
+      "icon": "fas fa-shield",
+      "description": "Reliable backup option"
+    }
+  },
+  "settings": {
+    "healthCheckInterval": 30000,
+    "maxRetries": 3,
+    "timeoutDuration": 10000,
+    "rotationInterval": 60000
+  },
+  "userAgents": [
+    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
+    "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
+    "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:109.0) Gecko/20100101 Firefox/121.0",
+    "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.2 Safari/605.1.15",
+    "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
+  ]
+}
