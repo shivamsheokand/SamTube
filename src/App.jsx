@@ -191,8 +191,8 @@ function App() {
             return;
         }
 
-        if (quantity < 1 || quantity > 50) {
-            showNotification('Please enter a quantity between 1 and 50', 'error');
+        if (quantity < 1 || quantity > 150) {
+            showNotification('Please enter a quantity between 1 and 150', 'error');
             return;
         }
 
@@ -513,9 +513,9 @@ function App() {
                 {/* Header */}
                 <header className="header">
                     <div className="header-left">
-                        <h1>
+                        <h1 className="logo1">
                             <i className="fab fa-youtube"></i>
-                            YouTube Multi-Player
+                            SAM TUBE
                         </h1>
                         <p>Advanced YouTube Video Management System</p>
                     </div>
@@ -569,7 +569,7 @@ function App() {
                             <input 
                                 type="number" 
                                 min="1" 
-                                max="50" 
+                                max="150" 
                                 value={quantity}
                                 onChange={(e) => setQuantity(parseInt(e.target.value) || 1)}
                                 className="number-input"
@@ -778,6 +778,7 @@ function App() {
                         </div>
                         <h3>No Videos Added Yet</h3>
                         <p>Enter a YouTube URL above and click "Add Videos" to get started</p>
+                        <br />
                         <p>Develop by : चौधरी शिवम श्योकंद ✨.</p>
                     </div>
                 )}

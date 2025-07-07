@@ -59,6 +59,7 @@ body {
   animation: titleGlow 2s ease-in-out infinite alternate;
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 12px;
 }
 
@@ -114,10 +115,10 @@ body {
 /* Notification */
 .notification {
   position: fixed;
-  top: 20px;
+  bottom: 35px;
   right: 20px;
   background: rgba(0, 0, 0, 0.9);
-  color: white;
+  color: red;
   padding: 16px 24px;
   border-radius: 12px;
   border: 1px solid rgba(79, 172, 254, 0.5);
@@ -733,7 +734,7 @@ body {
   
   .global-stats {
     flex-direction: row;
-    gap: 20px;
+    gap: 10px;
   }
   
   .control-row {
